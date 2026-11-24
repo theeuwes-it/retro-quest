@@ -107,7 +107,7 @@ export function viewFor(room: Room, playerId: string, ctx: ViewCtx): View | null
       name: b.name,
       attacks: b.attacks.map((a) => ({ ...a })),
       defeated: b.defeated,
-      hp: bossHp(b),
+      hp: b.defeated ? 0 : bossHp(b), // a defeated Boss always shows an empty HP bar
       maxHp: BOSS_MAX_HP,
     })),
     xp: partyXp(room),

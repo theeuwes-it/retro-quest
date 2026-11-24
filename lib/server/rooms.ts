@@ -9,6 +9,7 @@ import {
 import { apply, createRoom, freeAvatars, joinRoom, type Ctx } from '@/lib/shared/reducer';
 import type { ClientEvent, Player, Room, View } from '@/lib/shared/types';
 import { viewFor } from '@/lib/shared/view';
+export { normalizeCode } from '@/lib/shared/code';
 import { publishVersion, realtimeMode } from './realtime';
 import { getStore, type RoomStore } from './store';
 
@@ -31,13 +32,6 @@ export function makeCtx(presence?: Record<string, number>): Ctx {
 export function generateCode(): string {
   let code = '';
   for (let i = 0; i < ROOM_CODE_LENGTH; i++) code += ROOM_CODE_ALPHABET[randomInt(ROOM_CODE_ALPHABET.length)];
-  return code;
-}
-
-export function normalizeCode(raw: string): string | null {
-  const code = String(raw ?? '').toUpperCase();
-  if (code.length !== ROOM_CODE_LENGTH) return null;
-  for (const ch of code) if (!ROOM_CODE_ALPHABET.includes(ch)) return null;
   return code;
 }
 
