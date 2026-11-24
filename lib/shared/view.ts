@@ -81,7 +81,7 @@ export function viewFor(room: Room, playerId: string, ctx: ViewCtx): View | null
     isHost: viewer.id === room.hostPlayerId,
     hostAway,
     canClaimHost:
-      viewer.id !== room.hostPlayerId && room.phase !== 'ended' && ctx.now - hostLastSeen >= CLAIM_HOST_AFTER_MS,
+      viewer.id !== room.hostPlayerId && room.phase !== 'ended' && ctx.now - hostLastSeen >= OFFLINE_AFTER_MS + CLAIM_HOST_AFTER_MS,
     phase: room.phase,
     subPhase: room.subPhase,
     stepIndex: room.phase === 'ended' ? stepIndexOf('loot', 'active') : stepIndexOf(room.phase, room.subPhase),

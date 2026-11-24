@@ -13,6 +13,7 @@ import {
   MAX_MEMBERS,
   NAME_MAX,
   NAME_TAG_COLORS,
+  OFFLINE_AFTER_MS,
   STEPS,
   TAVERN_COMMENT_MAX,
   stepIndexOf,
@@ -409,7 +410,8 @@ export function apply(room: Room, event: ClientEvent, actorId: string, ctx: Ctx)
     case 'host:claim': {
       if (isHost) return fail('You are already the host');
       const lastSeen = ctx.presence?.[r.hostPlayerId] ?? r.createdAt;
-      if (ctx.now - lastSeen < CLAIM_HOST_AFTER_MS) {
+      // The host counts as offline OFFLINE_AFTER_MS after last being seen; the 2 minutes start then.
+      if (ctx.now - lastSeen < OFFLINE_AFTER_MS + CLAIM_HOST_AFTER_MS) {
         return fail('The host can only be replaced after being away for 2 minutes', 409);
       }
       const oldHost = r.players.find((p) => p.id === r.hostPlayerId);

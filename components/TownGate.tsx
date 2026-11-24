@@ -31,7 +31,9 @@ export function TownGate({ code, notice, onJoined }: { code: string; notice: str
         if (cancelled) return;
         if (!res.ok) return setLoadError({ status: res.status, message: body.error ?? 'Could not open this room' });
         setInfo(body);
-        setAvatar((a) => (a && body.freeAvatars.includes(a) ? a : (body.freeAvatars[0] ?? null)));
+        // A random free avatar, so people joining at the same moment rarely collide.
+        const free: string[] = body.freeAvatars;
+        setAvatar((a) => (a && free.includes(a) ? a : (free[Math.floor(Math.random() * free.length)] ?? null)));
       })
       .catch(() => {
         if (!cancelled) setLoadError({ status: 0, message: 'Could not reach the server' });

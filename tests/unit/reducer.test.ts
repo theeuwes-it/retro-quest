@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { bossHp, partyXp } from '@/lib/shared/rules';
 import { createRoom, joinRoom } from '@/lib/shared/reducer';
-import { CLAIM_HOST_AFTER_MS, STEPS } from '@/lib/shared/config';
+import { CLAIM_HOST_AFTER_MS, OFFLINE_AFTER_MS, STEPS } from '@/lib/shared/config';
 import { AVATARS } from '@/lib/shared/classes';
 import type { Room } from '@/lib/shared/types';
 import { act, goTo, makeCtx, setupRoom, tryAct } from './helpers';
@@ -265,9 +265,10 @@ describe('players and host transfer', () => {
   it('lets a player claim host only after the host was away for 2 minutes', () => {
     const { room, ids } = setupRoom(4);
     const now = room.createdAt + 10 * 60_000;
-    const recent = { ...makeCtx(now), presence: { [ids[0]]: now - 30_000 } };
+    // Offline for 1 minute: too early.
+    const recent = { ...makeCtx(now), presence: { [ids[0]]: now - OFFLINE_AFTER_MS - 60_000 } };
     expect(errorOf(tryAct(room, ids[1], { type: 'host:claim' }, recent))).toMatch(/2 minutes/);
-    const away = { ...makeCtx(now), presence: { [ids[0]]: now - CLAIM_HOST_AFTER_MS } };
+    const away = { ...makeCtx(now), presence: { [ids[0]]: now - OFFLINE_AFTER_MS - CLAIM_HOST_AFTER_MS } };
     const r = act(room, ids[1], { type: 'host:claim' }, away);
     expect(r.hostPlayerId).toBe(ids[1]);
     expect(r.hostToken).not.toBe(room.hostToken);

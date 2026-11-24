@@ -193,6 +193,7 @@ export async function leaveFlow(code: string, token: string | null) {
   if (!stored) return;
   const member = findMember(stored.room, token);
   if (!member) return;
-  await store.touch(code, member.id, 0);
+  // Seen just long enough ago to count as offline from now on.
+  await store.touch(code, member.id, Date.now() - OFFLINE_AFTER_MS);
   await publishVersion(code, stored.version);
 }

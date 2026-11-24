@@ -33,8 +33,13 @@ export const XP = {
 };
 
 // --- Presence / host transfer --------------------------------------------
-/** A member counts as offline when not seen for this long. */
-export const OFFLINE_AFTER_MS = 20_000;
+/**
+ * A member counts as offline when not seen for this long. Browsers throttle
+ * timers in hidden tabs to about once a minute, so this must stay above 60 s
+ * or a host who switches tabs would pause the session. Closing the tab is
+ * detected immediately through the leave beacon.
+ */
+export const OFFLINE_AFTER_MS = 75_000;
 /** Players may claim host after the host has been away this long. */
 export const CLAIM_HOST_AFTER_MS = 120_000;
 /** Clients refresh their view at least this often (keeps presence fresh). */
