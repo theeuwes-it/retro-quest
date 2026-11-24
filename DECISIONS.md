@@ -36,7 +36,7 @@ Where the handoff spec was silent or had to bend, the simpler option was chosen.
 
 ## Host transfer and presence
 
-- A member counts as **offline after 75 s** without a view refresh (clients refresh every 8 s). The threshold is above 60 s because browsers throttle timers in hidden tabs to about once a minute. Closing a tab is detected immediately through a `sendBeacon` to `/api/rooms/<code>/leave`.
+- A member counts as **offline after 75 s** without a view refresh (clients refresh every 8 s). The threshold is above 60 s because browsers throttle timers in hidden tabs to about once a minute. Closing a tab is detected through a `sendBeacon` to `/api/rooms/<code>/leave`, with a 10-second grace period. The beacon also fires on a page refresh, and a host who refreshes must not look disconnected, which would pause the session.
 - When the host is offline, **the session pauses**: the first player view that notices freezes a running timer.
 - **Claim host** becomes available 2 minutes after the host went offline. Claiming rotates the room's host token, so the old host comes back as a regular member (their own player token still works).
 - A host who chose **not to play** still has a member record (`plays: false`): no class, cards or coins.

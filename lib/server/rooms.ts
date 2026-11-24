@@ -2,6 +2,7 @@ import 'server-only';
 import { randomBytes, randomInt } from 'node:crypto';
 import {
   MAX_WRITE_ATTEMPTS,
+  LEAVE_GRACE_MS,
   OFFLINE_AFTER_MS,
   ROOM_CODE_ALPHABET,
   ROOM_CODE_LENGTH,
@@ -193,7 +194,9 @@ export async function leaveFlow(code: string, token: string | null) {
   if (!stored) return;
   const member = findMember(stored.room, token);
   if (!member) return;
-  // Seen just long enough ago to count as offline from now on.
-  await store.touch(code, member.id, Date.now() - OFFLINE_AFTER_MS);
-  await publishVersion(code, stored.version);
+  // Counts as offline LEAVE_GRACE_MS from now, unless the browser comes back
+  // first: a page refresh also fires the leave beacon, and must not make the
+  // host look disconnected (which would pause the session) for a moment.
+  // No ping here; the others notice on their next refresh after the grace.
+  await store.touch(code, member.id, Date.now() - OFFLINE_AFTER_MS + LEAVE_GRACE_MS);
 }

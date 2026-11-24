@@ -29,6 +29,21 @@ const presenceKey = (code: string) => `rq:presence:${code}`;
 // ---------------------------------------------------------------------------
 // Redis (Upstash REST)
 
+/**
+ * Turns an HGETALL reply into playerId -> last seen (ms). Accepts the flat
+ * [field, value, ...] array the REST client returns with automatic
+ * deserialization off, and a plain object for safety.
+ */
+export function parsePresence(raw: unknown): Record<string, number> {
+  const out: Record<string, number> = {};
+  if (Array.isArray(raw)) {
+    for (let i = 0; i + 1 < raw.length; i += 2) out[String(raw[i])] = Number(raw[i + 1]) || 0;
+  } else if (raw && typeof raw === 'object') {
+    for (const [k, v] of Object.entries(raw)) out[k] = Number(v) || 0;
+  }
+  return out;
+}
+
 const CAS_SCRIPT = `
 local cur = redis.call('GET', KEYS[1])
 if not cur then return -1 end
@@ -76,10 +91,9 @@ class RedisStore implements RoomStore {
   }
 
   async presence(code: string) {
-    const all = (await this.redis.hgetall<Record<string, string>>(presenceKey(code))) ?? {};
-    const out: Record<string, number> = {};
-    for (const [k, v] of Object.entries(all)) out[k] = Number(v) || 0;
-    return out;
+    // With automaticDeserialization off, HGETALL comes back as a flat
+    // [field, value, field, value] array rather than an object.
+    return parsePresence(await this.redis.hgetall(presenceKey(code)));
   }
 
   async rateLimit(key: string, limit: number, windowSec: number) {

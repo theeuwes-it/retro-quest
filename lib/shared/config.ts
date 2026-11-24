@@ -40,6 +40,8 @@ export const XP = {
  * detected immediately through the leave beacon.
  */
 export const OFFLINE_AFTER_MS = 75_000;
+/** After a tab closes, how long before it counts as offline (covers a page refresh). */
+export const LEAVE_GRACE_MS = 10_000;
 /** Players may claim host after the host has been away this long. */
 export const CLAIM_HOST_AFTER_MS = 120_000;
 /** Clients refresh their view at least this often (keeps presence fresh). */
