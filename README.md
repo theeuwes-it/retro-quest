@@ -48,7 +48,7 @@ The Playwright run records every `/view` response and fails if any client receiv
 
 1. Import the GitHub repository into Vercel (framework: Next.js; no build settings needed).
 2. Add **Upstash Redis** from the Vercel Marketplace (Storage → Upstash → Redis) and connect it to the project. This injects `KV_REST_API_URL` and `KV_REST_API_TOKEN`; `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` work too.
-3. Create an Ably app (free tier) and add its root API key as `ABLY_API_KEY` (Production and Preview). The key needs the *publish* and *subscribe* capabilities, plus permission to issue tokens.
+3. Create an Ably app (free tier) and add its root API key as a **Secret** `ABLY_API_KEY` for Production and Preview (`npx vercel@latest env add ABLY_API_KEY --environment production`). The key needs the *publish* and *subscribe* capabilities, plus permission to issue tokens. The app uses Ably's `@ably/pubsub-server` (publishing, token signing) and `@ably/pubsub-device` (browsers) packages; accounts on Ably's MAU pricing reject the older `ably` package. Each player counts as one monthly active user on Ably.
 4. Deploy. Without Redis the API refuses to run on Vercel, because in-memory state would split across function instances.
 
 | Variable | Required | Purpose |

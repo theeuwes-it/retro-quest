@@ -1,17 +1,18 @@
 import 'server-only';
-import Ably from 'ably';
+import { createHttpClient, type PubSubHttpClient } from '@ably/pubsub-server';
 
 // The real-time channel only ever carries `{ version }`: no retro content, so
 // no per-player channel authorisation is needed for privacy. Clients then
 // fetch their own filtered view.
 
-let rest: Ably.Rest | null = null;
+// Server side of Ably: publishing from our own backend is not counted as a user.
+let http: PubSubHttpClient | null = null;
 
-function client(): Ably.Rest | null {
+function client(): PubSubHttpClient | null {
   const key = process.env.ABLY_API_KEY;
   if (!key) return null;
-  rest ??= new Ably.Rest({ key });
-  return rest;
+  http ??= createHttpClient({ key });
+  return http;
 }
 
 export function realtimeMode(): 'ably' | 'poll' {
@@ -31,7 +32,10 @@ export async function publishVersion(code: string, version: number): Promise<voi
   }
 }
 
-/** Subscribe-only token request for one room's channel. */
+/**
+ * Subscribe-only token request for one room's channel. The token carries the
+ * player id as client ID, which Ably requires for browsers on MAU-billed accounts.
+ */
 export async function tokenRequest(code: string, playerId: string) {
   const c = client();
   if (!c) return null;

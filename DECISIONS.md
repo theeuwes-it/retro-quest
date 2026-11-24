@@ -5,6 +5,7 @@ Where the handoff spec was silent or had to bend, the simpler option was chosen.
 ## Confirmed with the product owner
 
 - **Real-time: Ably.** Vercel Functions now support WebSockets, but each connection is cut off at the function's max duration (5 min on Hobby) and fan-out across instances still needs Redis pub/sub. A managed ping (Ably) is less code and more robust. Clients fall back to polling `/view` every 3 s.
+- **Ably packages:** the server uses `@ably/pubsub-server` and browsers use `@ably/pubsub-device`, pinned at 3.1.0. Ably accounts on MAU pricing reject the classic `ably` package (error 40168). Browser tokens carry the player id as client ID, which MAU accounts require.
 - **Hosting:** Vercel, no SSO. **Git:** one commit per milestone, pushed to `main`.
 
 ## Architecture

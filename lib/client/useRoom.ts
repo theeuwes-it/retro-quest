@@ -143,11 +143,12 @@ export function useRoom(code: string, token: string | null) {
   useEffect(() => {
     if (!token || realtime !== 'ably') return;
     let closed = false;
-    let client: import('ably').Realtime | null = null;
+    let client: import('@ably/pubsub-device').PubSubClient | null = null;
     (async () => {
-      const Ably = await import('ably');
+      // Device side of Ably, loaded only when real-time is configured.
+      const { createClient } = await import('@ably/pubsub-device');
       if (closed) return;
-      client = new Ably.Realtime({
+      client = createClient({
         authUrl: `/api/rooms/${code}/realtime`,
         authHeaders: { [TOKEN_HEADER]: token },
         autoConnect: true,
