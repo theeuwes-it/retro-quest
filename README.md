@@ -65,7 +65,7 @@ There are no analytics or other external services.
 
 **Before the call (2 minutes).** Open the app, enter your name, keep **Host also plays** on if you want to take part, pick an avatar and press **Create room**. Copy the join link (`/<CODE>`) from the Town Gate.
 
-**0 · Town Gate (lobby).** Paste the link in the call chat. Players enter a name and pick an avatar, and they appear in the party bar at the top. When everyone is in, press **Start the quest**.
+**0 · Town Gate (lobby).** Paste the link in the call chat. Players enter a name (or pick one of the suggested questing names, like "Robin the Wise") and pick an avatar, and they appear in the party bar at the top. When everyone is in, press **Start the quest**.
 
 **1 · The Tavern (4 min, check-in).** Everyone picks the character class that matches how the sprint felt, with an optional one-line comment. You see how many have chosen, not what. Press **Reveal class picks**: every avatar turns into its class. Ask one or two people about their pick.
 

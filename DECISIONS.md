@@ -46,6 +46,10 @@ Where the handoff spec was silent or had to bend, the simpler option was chosen.
 - **Room codes** use letters only, without I, L and O (23⁴ ≈ 280k codes). Looking up a room and joining it are rate-limited to 20 per minute per IP. Rejoining with a stored token doesn't count, since the token is secret. Creating rooms is limited to 10 per minute per IP.
 - **Tokens** are 192-bit random values. `hostToken` and player tokens are never sent in a view (covered by unit tests).
 
+## Questing names
+
+- **Name suggestions are generated in the browser**, not by an AI service: no API key, no cost, no latency, and players' names never leave the app (keeping the spec's "only Redis and the real-time provider" rule). `lib/shared/fantasyNames.ts` combines the typed first name with epithets, titles, places and fantasy surnames ("Robin the Wise", "Robellan Ravenwood"). Suggestions are deterministic per name, so they don't flicker while typing. "More names" gives a fresh set, and every suggestion fits the 24-character limit.
+
 ## Look and sound
 
 - **No Framer Motion:** CSS keyframes cover flips, coin drops, Boss shakes and confetti, each under 800 ms. With `prefers-reduced-motion` they become fades.

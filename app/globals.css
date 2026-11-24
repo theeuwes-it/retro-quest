@@ -1399,3 +1399,45 @@ textarea {
     transition: none;
   }
 }
+
+/* ---------- Questing name suggestions ---------- */
+
+.name-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+}
+
+.name-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 2px solid var(--parchment-edge);
+  background: #fffaf0;
+  color: var(--ink);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.name-chip:hover {
+  border-color: var(--gold-ink);
+  background: #fff4d0;
+}
+
+.name-chip[aria-pressed='true'] {
+  border-color: var(--gold-ink);
+  background: #fff4d0;
+  box-shadow: 0 0 0 2px var(--gold);
+  font-weight: 700;
+}
+
+.btn.ghost-ink {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--parchment-edge);
+}
+
+.btn.ghost-ink:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.5);
+}

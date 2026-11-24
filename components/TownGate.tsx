@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import type { Membership } from '@/lib/client/storage';
-import { NAME_MAX } from '@/lib/shared/config';
 import { AvatarPicker } from './AvatarPicker';
+import { NameField } from './NameField';
 import { LocationIcon } from './art/Icons';
 import { Message } from './Message';
 
@@ -114,19 +114,7 @@ export function TownGate({ code, notice, onJoined }: { code: string; notice: str
             {notice}
           </p>
         )}
-        <div className="field">
-          <label htmlFor="player-name">Your name</label>
-          <input
-            id="player-name"
-            className="input"
-            value={name}
-            maxLength={NAME_MAX}
-            autoComplete="nickname"
-            autoFocus
-            onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Robin"
-          />
-        </div>
+        <NameField id="player-name" value={name} onChange={setName} placeholder="e.g. Robin" autoFocus />
         <div className="field">
           <span className="label">Choose your avatar</span>
           {info ? <AvatarPicker value={avatar} onChange={setAvatar} available={info.freeAvatars} /> : <p className="hint">Loading…</p>}

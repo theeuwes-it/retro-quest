@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { saveMembership } from '@/lib/client/storage';
 import { normalizeCode } from '@/lib/shared/code';
-import { NAME_MAX } from '@/lib/shared/config';
 import { AvatarPicker } from './AvatarPicker';
+import { NameField } from './NameField';
 import { LocationIcon } from './art/Icons';
 
 export function CreateRoom() {
@@ -61,18 +61,7 @@ export function CreateRoom() {
           <h2 id="create-title" className="pixel" style={{ fontSize: 14 }}>
             Host a new quest
           </h2>
-          <div className="field">
-            <label htmlFor="host-name">Your name</label>
-            <input
-              id="host-name"
-              className="input"
-              value={name}
-              maxLength={NAME_MAX}
-              autoComplete="nickname"
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Sam"
-            />
-          </div>
+          <NameField id="host-name" value={name} onChange={setName} placeholder="e.g. Sam" />
           <label className="toggle">
             <input type="checkbox" checked={plays} onChange={(e) => setPlays(e.target.checked)} />
             Host also plays (adds cards, votes and picks a class)
