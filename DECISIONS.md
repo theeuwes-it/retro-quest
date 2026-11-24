@@ -48,7 +48,9 @@ Where the handoff spec was silent or had to bend, the simpler option was chosen.
 
 ## Questing names
 
-- **Name suggestions are generated in the browser**, not by an AI service: no API key, no cost, no latency, and players' names never leave the app (keeping the spec's "only Redis and the real-time provider" rule). `lib/shared/fantasyNames.ts` combines the typed first name with epithets, titles, places and fantasy surnames ("Robin the Wise", "Robellan Ravenwood"). Suggestions are deterministic per name, so they don't flicker while typing. "More names" gives a fresh set, and every suggestion fits the 24-character limit.
+- **Name suggestions are generated in the browser**, not by an AI service: no API key, no cost, no latency, and players' names never leave the app (keeping the spec's "only Redis and the real-time provider" rule). `lib/shared/fantasyNames.ts` combines the typed first name with epithets, titles, places and fantasy surnames.
+- **Names follow the picked character.** Each of the 12 avatars has its own vocabulary (`NAME_STYLES`): a Knight gets "Sander the Gallant" or "Sandamir Lionhelm", a Witch "Sander of Nightshade". The Tavern classes can't drive the name, because they are chosen after joining. The forms now ask for the character first and the name second, so the suggestions visibly follow the pick. A host who doesn't play gets a generic set.
+- Suggestions are deterministic per name and avatar, so they don't flicker while typing. "More names" gives a fresh set, and every suggestion fits the 24-character limit.
 
 ## Look and sound
 

@@ -114,11 +114,11 @@ export function TownGate({ code, notice, onJoined }: { code: string; notice: str
             {notice}
           </p>
         )}
-        <NameField id="player-name" value={name} onChange={setName} placeholder="e.g. Robin" autoFocus />
         <div className="field">
           <span className="label">Choose your avatar</span>
           {info ? <AvatarPicker value={avatar} onChange={setAvatar} available={info.freeAvatars} /> : <p className="hint">Loading…</p>}
         </div>
+        <NameField id="player-name" value={name} onChange={setName} placeholder="e.g. Robin" autoFocus avatarId={avatar} />
         {error && (
           <p className="error-text" role="alert">
             {error}

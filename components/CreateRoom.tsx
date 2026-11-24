@@ -61,7 +61,6 @@ export function CreateRoom() {
           <h2 id="create-title" className="pixel" style={{ fontSize: 14 }}>
             Host a new quest
           </h2>
-          <NameField id="host-name" value={name} onChange={setName} placeholder="e.g. Sam" />
           <label className="toggle">
             <input type="checkbox" checked={plays} onChange={(e) => setPlays(e.target.checked)} />
             Host also plays (adds cards, votes and picks a class)
@@ -72,6 +71,7 @@ export function CreateRoom() {
               <AvatarPicker value={avatar} onChange={setAvatar} />
             </div>
           )}
+          <NameField id="host-name" value={name} onChange={setName} placeholder="e.g. Sam" avatarId={plays ? avatar : null} />
           {error && (
             <p className="error-text" role="alert">
               {error}
